@@ -136,10 +136,10 @@ Header2: Some header 2 value
 			   <strong>&lt;script&gt; alert('Данный сайт подвержен XSS атаке'); &lt;/script&gt;</strong>.
 			   Опишите, что случилось?</p>
 			<p>Попробуйте написать написать нужный комментарий, который перенаправит форму входа со страницы 
-			   <strong>/xss.php</strong> на страницу <strong>/xss-server.php</strong>. Для этого нужно 
+			   <strong>/xss/comments</strong> на страницу <strong>/xss/passwords</strong>. Для этого нужно 
 			   в комментарий вставить JavaScript-код в <strong>&lt;script&gt; &lt;/script&gt;</strong>, где найти первую форму 
 			   (тег form, можете использовать document.forms[0] в коде JavaScript) и заменить аттрибут 
-			   action на <strong>/xss-server.php</strong></p>
+			   action на <strong>/xss/passwords</strong></p>
 			<p style="color:#a00">Это пример, а не руководство к действию! Цель задания понять, как это работает, почему это опасно и как с этим бороться!</p>
 			<p>Собственно, в отчёте нужно написать, как можно с этим бороться. Например, как можно убрать весь JS код из строки. 
 			   Можно ли это сделать экранированием? Ответ вас поразит.</p>

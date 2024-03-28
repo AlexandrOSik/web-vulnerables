@@ -18,14 +18,14 @@ try {
 		header('HTTP/1.1 302 Found');
 		header("Location: $referer");
 	}
-	
+
 	$query = 'SELECT * FROM "stolen_identity" ORDER BY id DESC LIMIT 10';
 	$items = $db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
 	$error = $e->getMessage();
 } finally {
-	if ($pdo) {
+	if (isset($pdo)) {
 		$pdo = null;
 	}
 }
