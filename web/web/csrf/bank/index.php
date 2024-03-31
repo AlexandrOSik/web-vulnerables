@@ -12,13 +12,13 @@ try {
 	$db_user = 'bank';
 	$db_password = 'password';
 
-	$action = $_POST['action'];
+	$action = isset($_POST['action']) ? $_POST['action'] : NULL;
 
 	$dsn = "pgsql:host=$db_host;port=5432;dbname=$db_name;";
 	$db = new PDO($dsn, $db_user, $db_password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
 	if ($action === 'exit') {
-		setcookie('auth', '', -1, "/csrf/bank/", "", false, true);
+		setcookie('auth', '', -1, "/csrf/bank", "", false, true);
 		$usr = NULL;
 	} else if ($action === 'enter') {
 		$usr = $_POST['usr'];

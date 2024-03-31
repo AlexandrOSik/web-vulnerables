@@ -59,55 +59,59 @@ try {
           if ($password_hash !== $user['password']) {
             $template = 'password-error';
           }  
-          setcookie('auth', $user['id'] . '.' . hash('md5', $user['id'] . 'yohoho'));
+          setcookie('auth', $user['id'] . '.' . hash('md5', $user['id'] . 'yohoho'), 0, '/race', '', false, true);
           $user_id = $user['id'];
+
+          $template = 'lk';
         }
-    }
+    } else {
 
-    if ($user_id === NULL) {
-      header('HTTP/1.1 403 Forbidden');
-      exit(0);
-    }
-
-    if ($action === 'buy') {
-      $query_1 = 'SELECT "money" FROM "accounts" where id=?';
-      $stmt = $db->prepare($query_1);
-      $stmt->execute([$user_id]);
-      $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      $money = intval($rows[0]['money']);
-
-      if ($money < 75000) {
-        $template = 'no-enough-money';
-      } else {
-        $query_2 = 'INSERT INTO "payments"("account", "ammount", "text") VALUES (?, 75000, \'Заметный рост самого важного показателя! Все обзавидуются.\')';
-        $stmt = $db->prepare($query_2);
-        $stmt->execute([$user_id]);
-        $query_3 = 'UPDATE "accounts" SET "money"="money"-75000 WHERE id=?';
-        $stmt = $db->prepare($query_3);
-        $stmt->execute([$user_id]);
+      if ($user_id === NULL) {
+        header('HTTP/1.1 403 Forbidden');
+        exit(0);
       }
-    }
-
-    if ($action === 'return') {
-      $id = $_POST['payment-id'];
-      $query_1 = 'SELECT * FROM "payments" WHERE id=? AND account=? AND cancel=0';
-      $stmt = $db->prepare($query_1);
-      $stmt->execute([$id, $user_id]);
-      $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      if (count($payments) > 0) {
-        sleep(1);
-        $payment = $payments[0];
-        $query_2 = 'UPDATE "accounts" SET "money"="money"+? WHERE id=?';
-        $stmt = $db->prepare($query_2);
-        $stmt->execute([intval($payment['ammount']), $user_id]);
-        $query_3 = 'UPDATE "payments" SET "cancel"=1 WHERE id=?';
-        $stmt = $db->prepare($query_3);
-        $stmt->execute([$id]);
-      } else {
-        header('HTTP/1.1 400 Bad request');
-        exit();
+  
+      if ($action === 'buy') {
+        $query_1 = 'SELECT "money" FROM "accounts" where id=?';
+        $stmt = $db->prepare($query_1);
+        $stmt->execute([$user_id]);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $money = intval($rows[0]['money']);
+  
+        if ($money < 75000) {
+          $template = 'no-enough-money';
+        } else {
+          $query_2 = 'INSERT INTO "payments"("account", "ammount", "text") VALUES (?, 75000, \'Заметный рост самого важного показателя! Все обзавидуются.\')';
+          $stmt = $db->prepare($query_2);
+          $stmt->execute([$user_id]);
+          $query_3 = 'UPDATE "accounts" SET "money"="money"-75000 WHERE id=?';
+          $stmt = $db->prepare($query_3);
+          $stmt->execute([$user_id]);
+        }
       }
-      
+
+      if ($action === 'return') {
+        $id = $_POST['payment-id'];
+        $query_1 = 'SELECT * FROM "payments" WHERE id=? AND account=? AND cancel=0';
+        $stmt = $db->prepare($query_1);
+        $stmt->execute([$id, $user_id]);
+        $payments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (count($payments) > 0) {
+          sleep(1);
+          $payment = $payments[0];
+          $query_2 = 'UPDATE "accounts" SET "money"="money"+? WHERE id=?';
+          $stmt = $db->prepare($query_2);
+          $stmt->execute([intval($payment['ammount']), $user_id]);
+          $query_3 = 'UPDATE "payments" SET "cancel"=1 WHERE id=?';
+          $stmt = $db->prepare($query_3);
+          $stmt->execute([$id]);
+        } else {
+          header('HTTP/1.1 400 Bad request');
+          exit();
+        }
+        
+      }
+
     }
 
 	}
@@ -171,7 +175,7 @@ try {
 
   <section>
     <h1>Личный кабинет</h1>
-    <div class="user"><?= $user['login'] ?></div>
+    <div class="user"><?= $user['login'] ?> <a href="/race/exit.php">Выйти</a></div>
     <div class="money">Вы обладатель <span class="ammount"><?= $user['money'] ?></span> попугаев</div>
   </section>
 

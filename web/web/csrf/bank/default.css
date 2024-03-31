@@ -1,10 +1,9 @@
 .ammount {
 	color:#f00;
-	font-size:25px;
-	border:1px solid #f00;
-	width:200px;
+	font-size:16px;
+	max-width:300px;
 	padding:5px 10px;
-	text-align:right;
+	text-align:left;
 }
 
 form.default {
