@@ -1,7 +1,5 @@
 
 CREATE USER "auth_user" WITH PASSWORD 'password';
-CREATE USER "comment_user" WITH PASSWORD 'password';
-CREATE USER "blind_auth_user" WITH PASSWORD 'password';
 
 DROP DATABASE IF EXISTS "auth";
 CREATE DATABASE "auth";

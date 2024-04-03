@@ -8,6 +8,7 @@ $db_password = 'password';
 try {
 	$dsn = "pgsql:host=$db_host;port=5432;dbname=$db_name;";
 	$db = new PDO($dsn, $db_user, $db_password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+	$show_auth_message = false;
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if (isset($_POST['clear'])) {
@@ -21,8 +22,8 @@ try {
 				$query = 'INSERT INTO "comments"("text") VALUES (?)';
 				$db->prepare($query)->execute([ $comment ]);
 			}
-		} else if (isset($_POST['what i see'])) {
-
+		} else if (isset($_POST['usr'])) {
+			$show_auth_message = true;
 		}
 	}
 	
@@ -50,6 +51,11 @@ try {
 
 <header>
 	<form action="" method="post">
+		<?php if($show_auth_message): ?>
+			<p>Вы успешно вошли в меня! Поздравляю! Страница, с которой отправлен запрос: <?= $_SERVER['HTTP_REFERER'] ?></p>
+		<?php else: ?>
+			<p>Войди в меня, о пользователь!</p>
+		<?php endif; ?>
 		<input type="text" placeholder="Логин" name="usr" >
 		<input type="password" placeholder="Пароль" name="pwd" >
 		<input type="submit" value="Войти" >

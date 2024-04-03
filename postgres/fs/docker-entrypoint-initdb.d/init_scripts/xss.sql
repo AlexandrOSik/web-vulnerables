@@ -1,6 +1,7 @@
 
 DROP DATABASE IF EXISTS "forum";
 
+CREATE USER "comment_user" WITH PASSWORD 'password';
 CREATE DATABASE "forum";
 
 \c forum;
@@ -14,7 +15,6 @@ INSERT INTO "comments"("text") VALUES ('Замечательный сайт, т�
 
 GRANT USAGE,SELECT ON SEQUENCE comments_id_seq TO "comment_user";
 GRANT SELECT,INSERT ON "comments" TO "comment_user";
-
 
 CREATE DATABASE "hacker_db";
 
